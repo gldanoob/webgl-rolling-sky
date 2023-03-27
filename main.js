@@ -19,6 +19,7 @@ let scoreSubmitted = false;
 let level = 1;
 let data;
 let reqId;
+
 $.getJSON('levels.json', d => {
     data = d;
     loadLevel(level);
@@ -131,13 +132,18 @@ function loadLevel(level) {
 var ball = new Ball();
 
 keystate = [];
-//Loop function
-function render() {
+
+time = 0;
+function render(timestamp) {
+    dt = timestamp - time;
+    time = timestamp;
+
     renderer.render(scene, camera);
-    ball.update();
+    ball.update(dt * 3 / 50);
     percent = Math.ceil(
         Math.abs(ball.mesh.position.z) / data[level - 1].data.length * 100
     );
+
     percent = percent > 100 ? 100 : percent;
     $('#percent').html(percent + '%');
     if (keystate[37]) ball.mesh.position.x -= 0.15;

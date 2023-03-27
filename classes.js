@@ -12,10 +12,10 @@ class Ball {
         this.count2Lose = 0;
     }
 
-    update() {
-        this.mesh.position.y += this.speed.y;
-        this.mesh.position.z += this.speed.z;
-        camera.position.z += this.speed.z;
+    update(dt) {
+        this.mesh.position.y += this.speed.y * dt;
+        this.mesh.position.z += this.speed.z * dt;
+        camera.position.z += this.speed.z * dt;
         if (this.mesh.position.y <= 0.6 && this.mesh.position.y > 0 && !this.count2Lose) {
             this.landed = false;
             world.forEach(v => {
@@ -34,7 +34,7 @@ class Ball {
             });
 
             if (!this.landed) {
-                this.speed.y -= 0.04;
+                this.speed.y -= 0.03 * dt;
                 if (!this.count2Lose) this.count2Lose = 1;
             }
             world.forEach(v => {
@@ -49,7 +49,7 @@ class Ball {
             });
         } else {
             this.landed = false;
-            this.speed.y -= 0.04;
+            this.speed.y -= 0.15 / 4 * dt;
         }
 
         if (this.count2Lose) {
